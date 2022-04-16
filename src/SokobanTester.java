@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * SokobanTester solves easy to moderate sokoban puzzles using different search algorithms.
@@ -8,13 +9,11 @@ import java.io.IOException;
  */
 public class SokobanTester {
 
-	public static void main(String[] args) {
-		try {
-			MainFrame m = new MainFrame();
-		} catch (IOException e) {
-			System.out.println("IO Exception occured");
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws Exception{
+		System.out.println("Sokoban Solver cli edition");
+		SokobanSolver ss = new SokobanSolver();
+		ss.loadScanner(new Scanner(System.in), 'b');
+		System.out.println(ss.solve('u'));
 	}
 
 }

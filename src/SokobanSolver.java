@@ -28,13 +28,19 @@ public class SokobanSolver {
 	
 	/**
 	 * Reads each line from the input file and adds each character to walls, goals, player or boxes
-	 * @param filename
+	 * @param sc
 	 * @return
 	 * @throws FileNotFoundException
 	 * @throws NumberFormatException
 	 * @throws NoSuchElementException
 	 */
-	public int loadFile(String filename, char hChoice) throws FileNotFoundException, 
+
+	 public int loadFile(String filename, char hChoice) throws FileNotFoundException, 
+	 NumberFormatException, NoSuchElementException{
+		return this.loadScanner(new Scanner(new File(filename)), hChoice);
+	 }
+
+	public int loadScanner(Scanner sc, char hChoice) throws FileNotFoundException, 
 			NumberFormatException, NoSuchElementException {
 		
 		col = 0;
@@ -42,21 +48,29 @@ public class SokobanSolver {
 		walls = new HashSet<Coordinate>();
 		goals = new HashSet<Coordinate>();
 		boxes = new HashSet<Coordinate>();
-		Scanner s = new Scanner(new File(filename));
-		row = Integer.parseInt(s.nextLine());
-		for (int i=0; i<row; i++) {
+		Scanner s = sc;
+		// Goals = targets
+		row = 12; // Integer.parseInt(s.nextLine());
+		for (int i=0; i < row; i++) {
 			String next = s.nextLine();
 			for (int j=0; j<next.length(); j++) {
 				char c = next.charAt(j);
-				if (c=='#') //walls
+				if (c == '#') // Walls
 					walls.add(new Coordinate(i, j));
-				if (c == '@' || c == '+') { //player
+				if (c == 'x' || c == 'X') {
 					player = new Coordinate(i, j);
 					numPlayer++;
+					if(c == 'X'){
+						// Player standing on target
+						goals.add(new Coordinate(i, j));
+					}
 				}
-				if (c == '.' || c == '+' || c == '*') //goals
+				if (c == '.') //goals
 					goals.add(new Coordinate(i, j));
-				if (c == '$' || c == '*') //boxes
+				if (c == 'm') //boxes
+					boxes.add(new Coordinate(i,j));
+				if (c == 'M') // boxes on target (MODDED!)
+					goals.add(new Coordinate(i, j));
 					boxes.add(new Coordinate(i,j));
 			}
 			if (next.length() > col)
